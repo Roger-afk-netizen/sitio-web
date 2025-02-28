@@ -1,0 +1,34 @@
+name: Blue/Green Deployment and Testing
+
+on:
+  push:
+    branches: [ blue ]
+  workflow_dispatch:
+
+jobs:
+  deploy-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Tests
+        run: |
+          curl -s http://Roger-afk-netizen.github.io/sitio-web/ | grep "Bienvenidos a la versión Blue"
+
+      - name: Notify Test Success
+        if: success()
+        run: echo "La versión Blue pasó las pruebas."
+
+      - name: Notify Test Failure
+        if: failure()
+        run: echo "La versión Blue falló las pruebas. Rollback a la versión Green iniciado."
+
+      - name: Promote Blue to Green (Simulación)
+        if: success()
+        run: |
+          git checkout green
+          git merge blue
+          git push origin green
+          echo "Promoviendo la versión Blue a producción (simulado)."
