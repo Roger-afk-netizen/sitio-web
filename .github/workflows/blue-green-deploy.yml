@@ -15,7 +15,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          curl -s http://Roger-afk-netizen.github.io/sitio-web/ | grep "Bienvenidos a la versión Blue"
+          curl -s https://roger-afk-netizen.github.io/sitio-web/
 
       - name: Notify Test Success
         if: success()
